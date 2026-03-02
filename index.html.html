@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jagadeesh — Frontend Developer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Bebas Neue', 'sans-serif'],
+            body: ['DM Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            cream: '#F0EBE1',
+            rust: '#C84B2F',
+            coal: '#0F0F0F',
+            ash: '#1A1A1A',
+            smoke: '#2A2A2A',
+            mist: '#6B6B6B',
+          },
+          animation: {
+            'fade-up': 'fadeUp 0.7s ease forwards',
+            'fade-in': 'fadeIn 0.5s ease forwards',
+            'line-grow': 'lineGrow 1s ease forwards',
+            'blink': 'blink 1s step-end infinite',
+          },
+          keyframes: {
+            fadeUp: {
+              '0%': { opacity: 0, transform: 'translateY(30px)' },
+              '100%': { opacity: 1, transform: 'translateY(0)' },
+            },
+            fadeIn: {
+              '0%': { opacity: 0 },
+              '100%': { opacity: 1 },
+            },
+            lineGrow: {
+              '0%': { width: '0%' },
+              '100%': { width: '100%' },
+            },
+            blink: {
+              '0%, 100%': { opacity: 1 },
+              '50%': { opacity: 0 },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: #0F0F0F; color: #F0EBE1; font-family: 'DM Sans', sans-serif; cursor: none; }
+
+    /* Custom cursor */
+    .cursor { position: fixed; width: 10px; height: 10px; background: #C84B2F; border-radius: 50%; pointer-events: none; z-index: 9999; transition: transform 0.1s ease; mix-blend-mode: normal; }
+    .cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid rgba(200,75,47,0.5); border-radius: 50%; pointer-events: none; z-index: 9998; transition: transform 0.15s ease, width 0.2s, height 0.2s; }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 1000; opacity: 0.4;
+    }
+
+    /* Nav */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500; mix-blend-mode: normal; }
+
+    /* Section reveal */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Skill tag */
+    .skill-tag { background: #1A1A1A; border: 1px solid #2A2A2A; color: #F0EBE1; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; padding: 4px 10px; border-radius: 2px; letter-spacing: 0.05em; transition: border-color 0.2s, background 0.2s; display: inline-block; }
+    .skill-tag:hover { border-color: #C84B2F; background: #1f1210; }
+
+    /* Timeline line */
+    .timeline-line { position: absolute; left: 0; top: 8px; bottom: 0; width: 1px; background: linear-gradient(to bottom, #C84B2F, transparent); }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: #0F0F0F; }
+    ::-webkit-scrollbar-thumb { background: #C84B2F; }
+
+    /* Big number */
+    .big-stat { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 8vw, 6rem); color: #C84B2F; line-height: 1; }
+
+    /* Horizontal rule styled */
+    .hr-rust { border: none; border-top: 1px solid #2A2A2A; }
+
+    /* Section label */
+    .section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em; color: #C84B2F; text-transform: uppercase; }
+
+    /* Card hover */
+    .project-card { border: 1px solid #2A2A2A; background: #1A1A1A; transition: border-color 0.3s, transform 0.3s; }
+    .project-card:hover { border-color: #C84B2F; transform: translateY(-4px); }
+
+    /* Contact link */
+    .contact-link { border-bottom: 1px solid #2A2A2A; transition: border-color 0.2s, color 0.2s; }
+    .contact-link:hover { border-color: #C84B2F; color: #C84B2F; }
+
+    /* Typewriter */
+    .typewriter::after { content: '|'; animation: blink 1s step-end infinite; color: #C84B2F; }
+
+    @media (max-width: 768px) {
+      .hide-mobile { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav class="py-5 px-6 md:px-16 flex items-center justify-between border-b border-smoke/40 backdrop-blur-sm bg-coal/80">
+  <span class="font-display text-xl tracking-widest text-cream">JG<span class="text-rust">.</span></span>
+  <div class="flex gap-8 text-sm font-body text-mist">
+    <a href="#about" class="hover:text-cream transition-colors">About</a>
+    <a href="#experience" class="hover:text-cream transition-colors">Experience</a>
+    <a href="#skills" class="hover:text-cream transition-colors">Skills</a>
+    <a href="#contact" class="hover:text-cream transition-colors">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="min-h-screen flex flex-col justify-end px-6 md:px-16 pb-16 pt-32 relative overflow-hidden">
+  <!-- Background large text -->
+  <div class="absolute top-1/2 left-0 -translate-y-1/2 font-display text-[20vw] text-smoke/30 select-none pointer-events-none leading-none tracking-tight hide-mobile">
+    REACT
+  </div>
+
+  <div class="relative z-10 max-w-5xl">
+    <p class="section-label mb-6" style="animation: fadeUp 0.5s ease 0.1s forwards; opacity:0">Frontend Developer — Bangalore, India</p>
+    <h1 class="font-display text-cream leading-none mb-4" style="font-size: clamp(3.5rem, 10vw, 9rem); animation: fadeUp 0.7s ease 0.2s forwards; opacity:0">
+      JAGADEESH
+    </h1>
+    <div class="w-full h-px bg-smoke my-6" style="animation: lineGrow 1s ease 0.6s forwards; width:0"></div>
+    <p class="text-mist font-body font-light text-lg md:text-xl max-w-2xl leading-relaxed" style="animation: fadeUp 0.7s ease 0.5s forwards; opacity:0">
+      Building scalable enterprise web applications with <span class="text-cream font-medium">React.js</span>, 
+      <span class="text-cream font-medium">Redux Toolkit</span>, and modern frontend tooling. 
+      1.5 years of production React experience — real products, real users.
+    </p>
+    <div class="flex gap-4 mt-10" style="animation: fadeUp 0.7s ease 0.7s forwards; opacity:0">
+      <a href="#experience" class="bg-rust text-cream px-6 py-3 text-sm font-mono tracking-wider hover:bg-rust/80 transition-colors">
+        VIEW WORK →
+      </a>
+      <a href="#contact" class="border border-smoke text-cream px-6 py-3 text-sm font-mono tracking-wider hover:border-rust transition-colors">
+        GET IN TOUCH
+      </a>
+    </div>
+  </div>
+
+  <!-- Stats row -->
+  <div class="relative z-10 mt-20 grid grid-cols-3 gap-8 max-w-lg" style="animation: fadeUp 0.7s ease 0.9s forwards; opacity:0">
+    <div>
+      <div class="big-stat">1.5</div>
+      <p class="text-mist text-xs font-mono tracking-wider mt-1">YRS REACT EXP</p>
+    </div>
+    <div>
+      <div class="big-stat">3.7</div>
+      <p class="text-mist text-xs font-mono tracking-wider mt-1">YRS TOTAL EXP</p>
+    </div>
+    <div>
+      <div class="big-stat">6+</div>
+      <p class="text-mist text-xs font-mono tracking-wider mt-1">MODULES BUILT</p>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="py-24 px-6 md:px-16 border-t border-smoke">
+  <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-16 items-start">
+    <div class="reveal">
+      <p class="section-label mb-4">01 — About</p>
+      <h2 class="font-display text-5xl md:text-6xl text-cream mb-6">WHO I AM</h2>
+      <p class="text-mist font-light leading-relaxed mb-4">
+        I'm a Frontend Developer based in Andhra Pradesh, currently working in Bangalore. I specialize in React.js and love building things that are fast, modular, and work well at scale.
+      </p>
+      <p class="text-mist font-light leading-relaxed mb-4">
+        At AFORV, I built a full enterprise ERP system for medical implant management — from architecture discussions to shipped features like real-time dashboards, PDF exports, and multi-module workflows. That's the kind of work I do.
+      </p>
+      <p class="text-mist font-light leading-relaxed">
+        My background is honest: I came from a support role at BYJU's, taught myself React, and landed a developer role through sheer effort. I believe in building real things, not faking experience.
+      </p>
+    </div>
+    <div class="reveal" style="transition-delay: 0.2s">
+      <p class="section-label mb-4">Education</p>
+      <div class="space-y-6">
+        <div class="border-l-2 border-rust pl-5">
+          <p class="font-mono text-xs text-mist mb-1">SVCET, Chittoor</p>
+          <p class="text-cream font-medium">MBA — Master of Business Administration</p>
+        </div>
+        <div class="border-l-2 border-smoke pl-5">
+          <p class="font-mono text-xs text-mist mb-1">Sri Venkateswara University</p>
+          <p class="text-cream font-medium">BBA — Bachelor of Business Administration</p>
+        </div>
+      </div>
+
+      <div class="mt-10">
+        <p class="section-label mb-4">Languages</p>
+        <div class="flex gap-3">
+          <span class="skill-tag">English</span>
+          <span class="skill-tag">Hindi</span>
+          <span class="skill-tag">Telugu</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="py-24 px-6 md:px-16 bg-ash border-t border-smoke">
+  <div class="max-w-5xl mx-auto">
+    <div class="reveal">
+      <p class="section-label mb-4">02 — Experience</p>
+      <h2 class="font-display text-5xl md:text-6xl text-cream mb-16">WHERE I'VE WORKED</h2>
+    </div>
+
+    <!-- AFORV -->
+    <div class="reveal mb-16">
+      <div class="flex flex-col md:flex-row md:items-start gap-6 md:gap-16">
+        <div class="md:w-48 shrink-0">
+          <p class="font-mono text-xs text-rust tracking-wider">MAY 2024 — PRESENT</p>
+          <p class="font-mono text-xs text-mist mt-1">1.5 YRS</p>
+        </div>
+        <div class="flex-1">
+          <div class="flex items-start justify-between gap-4 mb-4">
+            <div>
+              <h3 class="font-display text-3xl text-cream">AFORV TECHNOLOGIES</h3>
+              <p class="text-rust font-mono text-sm tracking-wider mt-1">FRONTEND DEVELOPER · BANGALORE</p>
+            </div>
+          </div>
+          <hr class="hr-rust mb-6"/>
+
+          <!-- Project highlight card -->
+          <div class="project-card p-5 mb-6 rounded-sm">
+            <p class="font-mono text-xs text-rust mb-3 tracking-wider">FLAGSHIP PROJECT</p>
+            <p class="text-cream font-medium mb-2">Medical Implant Management System</p>
+            <p class="text-mist text-sm font-light leading-relaxed mb-4">
+              Enterprise-grade ERP covering Surgery Tracking, Sales, Logistics, Purchase Orders, Quality Control, and Inventory Movement — all built as independent React modules.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="skill-tag">React.js v18</span>
+              <span class="skill-tag">Redux Toolkit</span>
+              <span class="skill-tag">REST APIs</span>
+              <span class="skill-tag">Tailwind CSS</span>
+              <span class="skill-tag">Bootstrap 5</span>
+              <span class="skill-tag">Postman</span>
+            </div>
+          </div>
+
+          <ul class="space-y-3 text-mist font-light text-sm leading-relaxed relative pl-6">
+            <div class="timeline-line"></div>
+            <li class="relative">Built <span class="text-cream">reusable React component libraries</span> — modular, responsive, and cross-browser compatible</li>
+            <li class="relative">Integrated <span class="text-cream">REST APIs</span> for real-time data; tested and validated with Postman</li>
+            <li class="relative">Implemented <span class="text-cream">dynamic dashboards, sortable tables, and PDF export</span> for enterprise reporting workflows</li>
+            <li class="relative">Designed <span class="text-cream">mock UI prototypes</span> for client approval before development — reduced revision cycles</li>
+            <li class="relative">Resolved <span class="text-cream">frontend performance bottlenecks</span>; improved page load speed and app stability</li>
+            <li class="relative">Participated in <span class="text-cream">Agile/Scrum ceremonies</span> and architectural discussions with backend and QA teams</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <hr class="hr-rust mb-16"/>
+
+    <!-- BYJU's -->
+    <div class="reveal">
+      <div class="flex flex-col md:flex-row md:items-start gap-6 md:gap-16">
+        <div class="md:w-48 shrink-0">
+          <p class="font-mono text-xs text-mist tracking-wider">MAR 2022 — MAY 2024</p>
+          <p class="font-mono text-xs text-mist mt-1">2.2 YRS</p>
+        </div>
+        <div class="flex-1">
+          <h3 class="font-display text-3xl text-cream">BYJU'S</h3>
+          <p class="text-mist font-mono text-sm tracking-wider mt-1 mb-4">STUDENT SUPPORT SPECIALIST · BANGALORE</p>
+          <hr class="hr-rust mb-6"/>
+          <ul class="space-y-3 text-mist font-light text-sm leading-relaxed relative pl-6">
+            <div class="timeline-line"></div>
+            <li>Guided premium users through course-related queries in a high-volume, fast-paced environment</li>
+            <li>Maintained daily operational reports (Excel) tracking interactions, resolution rates, and follow-ups</li>
+            <li>Collaborated with team leads to maintain consistent service quality standards</li>
+            <li>Built strong <span class="text-cream">communication, problem-solving, and stakeholder management</span> skills — used every day as a developer now</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="py-24 px-6 md:px-16 border-t border-smoke">
+  <div class="max-w-5xl mx-auto">
+    <div class="reveal">
+      <p class="section-label mb-4">03 — Skills</p>
+      <h2 class="font-display text-5xl md:text-6xl text-cream mb-16">WHAT I BUILD WITH</h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-12">
+      <div class="reveal">
+        <p class="font-mono text-xs text-rust tracking-wider mb-4">CORE FRONTEND</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="skill-tag">React.js v18</span>
+          <span class="skill-tag">Redux Toolkit</span>
+          <span class="skill-tag">JavaScript ES6+</span>
+          <span class="skill-tag">HTML5</span>
+          <span class="skill-tag">CSS3</span>
+          <span class="skill-tag">React Router</span>
+          <span class="skill-tag">React Hooks</span>
+          <span class="skill-tag">Context API</span>
+          <span class="skill-tag">Next.js</span>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:0.1s">
+        <p class="font-mono text-xs text-rust tracking-wider mb-4">STYLING</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="skill-tag">Tailwind CSS</span>
+          <span class="skill-tag">Bootstrap 5</span>
+          <span class="skill-tag">Responsive Design</span>
+          <span class="skill-tag">CSS Modules</span>
+          <span class="skill-tag">Cross-Browser Compat.</span>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:0.15s">
+        <p class="font-mono text-xs text-rust tracking-wider mb-4">APIs & BACKEND BASICS</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="skill-tag">REST APIs</span>
+          <span class="skill-tag">Axios</span>
+          <span class="skill-tag">Postman</span>
+          <span class="skill-tag">Node.js (basics)</span>
+          <span class="skill-tag">MySQL (basics)</span>
+          <span class="skill-tag">MongoDB (basics)</span>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:0.2s">
+        <p class="font-mono text-xs text-rust tracking-wider mb-4">TOOLS & WORKFLOW</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="skill-tag">Git / GitHub</span>
+          <span class="skill-tag">Jira</span>
+          <span class="skill-tag">Figma</span>
+          <span class="skill-tag">VS Code</span>
+          <span class="skill-tag">Chrome DevTools</span>
+          <span class="skill-tag">Agile / Scrum</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="py-24 px-6 md:px-16 bg-ash border-t border-smoke">
+  <div class="max-w-5xl mx-auto">
+    <div class="reveal">
+      <p class="section-label mb-4">04 — Contact</p>
+      <h2 class="font-display text-5xl md:text-7xl text-cream mb-6">LET'S TALK<span class="text-rust">.</span></h2>
+      <p class="text-mist font-light text-lg max-w-xl mb-12 leading-relaxed">
+        Open to frontend developer roles in Bangalore and remote. Reach out directly — I respond fast.
+      </p>
+    </div>
+
+    <div class="reveal grid md:grid-cols-2 gap-8 max-w-xl">
+      <div>
+        <p class="font-mono text-xs text-rust tracking-wider mb-3">EMAIL</p>
+        <a href="mailto:yedivilajagadeesh@gmail.com" class="contact-link text-cream font-light pb-1 text-sm break-all">
+          yedivilajagadeesh@gmail.com
+        </a>
+      </div>
+      <div>
+        <p class="font-mono text-xs text-rust tracking-wider mb-3">PHONE</p>
+        <a href="tel:+916303400360" class="contact-link text-cream font-light pb-1 text-sm">
+          +91 63034 00360
+        </a>
+      </div>
+      <div>
+        <p class="font-mono text-xs text-rust tracking-wider mb-3">LOCATION</p>
+        <p class="text-mist text-sm">Madanapalle, A.P. (Open to Bangalore)</p>
+      </div>
+      <div>
+        <p class="font-mono text-xs text-rust tracking-wider mb-3">AVAILABILITY</p>
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 bg-green-400 rounded-full inline-block animate-pulse"></span>
+          <p class="text-cream text-sm">Open to opportunities</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal mt-12">
+      <a href="mailto:yedivilajagadeesh@gmail.com"
+        class="inline-block bg-rust text-cream px-8 py-4 font-mono text-sm tracking-wider hover:bg-rust/80 transition-colors">
+        SEND ME A MESSAGE →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="py-6 px-6 md:px-16 border-t border-smoke flex items-center justify-between">
+  <span class="font-display text-lg tracking-widest text-smoke">JAGADEESH<span class="text-rust">.</span></span>
+  <p class="font-mono text-xs text-mist">React.js Frontend Developer · 2025</p>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  document.addEventListener('mousemove', (e) => {
+    cursor.style.left = e.clientX - 5 + 'px';
+    cursor.style.top = e.clientY - 5 + 'px';
+    ring.style.left = e.clientX - 18 + 'px';
+    ring.style.top = e.clientY - 18 + 'px';
+  });
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'scale(2)';
+      ring.style.width = '50px';
+      ring.style.height = '50px';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'scale(1)';
+      ring.style.width = '36px';
+      ring.style.height = '36px';
+    });
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Animate timeline line on scroll
+  document.querySelectorAll('.timeline-line').forEach(line => {
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) line.style.transition = 'height 1s ease';
+    });
+    obs.observe(line);
+  });
+</script>
+</body>
+</html>
