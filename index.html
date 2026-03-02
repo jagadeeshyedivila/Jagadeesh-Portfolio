@@ -1,452 +1,708 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Jagadeesh — Frontend Developer</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            display: ['Bebas Neue', 'sans-serif'],
-            body: ['DM Sans', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          },
-          colors: {
-            cream: '#F0EBE1',
-            rust: '#C84B2F',
-            coal: '#0F0F0F',
-            ash: '#1A1A1A',
-            smoke: '#2A2A2A',
-            mist: '#6B6B6B',
-          },
-          animation: {
-            'fade-up': 'fadeUp 0.7s ease forwards',
-            'fade-in': 'fadeIn 0.5s ease forwards',
-            'line-grow': 'lineGrow 1s ease forwards',
-            'blink': 'blink 1s step-end infinite',
-          },
-          keyframes: {
-            fadeUp: {
-              '0%': { opacity: 0, transform: 'translateY(30px)' },
-              '100%': { opacity: 1, transform: 'translateY(0)' },
-            },
-            fadeIn: {
-              '0%': { opacity: 0 },
-              '100%': { opacity: 1 },
-            },
-            lineGrow: {
-              '0%': { width: '0%' },
-              '100%': { width: '100%' },
-            },
-            blink: {
-              '0%, 100%': { opacity: 1 },
-              '50%': { opacity: 0 },
-            }
-          }
-        }
-      }
-    }
-  </script>
-  <style>
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { background: #0F0F0F; color: #F0EBE1; font-family: 'DM Sans', sans-serif; cursor: none; }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Jagadeesh — React.js Frontend Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#060612;--bg2:#0d0d1f;--surface:#11112a;--surface2:#16163a;
+  --accent:#6C63FF;--accent2:#FF6B9D;--accent3:#00D4FF;--accent4:#FFB347;
+  --text:#E8E6FF;--muted:#7B78A8;--border:rgba(108,99,255,0.2);--glow:rgba(108,99,255,0.4);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;overflow-x:hidden;cursor:none}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--accent);border-radius:4px}
 
-    /* Custom cursor */
-    .cursor { position: fixed; width: 10px; height: 10px; background: #C84B2F; border-radius: 50%; pointer-events: none; z-index: 9999; transition: transform 0.1s ease; mix-blend-mode: normal; }
-    .cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid rgba(200,75,47,0.5); border-radius: 50%; pointer-events: none; z-index: 9998; transition: transform 0.15s ease, width 0.2s, height 0.2s; }
+/* CURSOR */
+.cursor{position:fixed;width:12px;height:12px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transition:transform 0.1s,background 0.2s;box-shadow:0 0 10px var(--accent),0 0 20px var(--accent),0 0 40px var(--accent);transform:translate(-50%,-50%)}
+.cursor-trail{position:fixed;width:40px;height:40px;border:1px solid rgba(108,99,255,0.45);border-radius:50%;pointer-events:none;z-index:9998;transition:all 0.12s ease;transform:translate(-50%,-50%)}
 
-    /* Grain overlay */
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-      pointer-events: none; z-index: 1000; opacity: 0.4;
-    }
+/* STARS */
+#stars-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.5}
 
-    /* Nav */
-    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500; mix-blend-mode: normal; }
+/* NAV */
+nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:500;background:rgba(17,17,42,0.75);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:100px;padding:10px 28px;display:flex;align-items:center;gap:28px;box-shadow:0 8px 32px rgba(108,99,255,0.15),inset 0 1px 0 rgba(255,255,255,0.05);white-space:nowrap}
+.logo{font-family:'JetBrains Mono',monospace;font-size:0.85rem;font-weight:600;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-links{display:flex;align-items:center;gap:24px}
+.nav-links a{font-size:0.82rem;color:var(--muted);text-decoration:none;transition:color 0.2s;font-weight:500}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{background:linear-gradient(135deg,var(--accent),var(--accent2));color:white!important;padding:7px 18px;border-radius:100px;font-size:0.78rem!important;font-weight:600!important;box-shadow:0 4px 15px rgba(108,99,255,0.4);transition:opacity 0.2s,transform 0.2s!important}
+.nav-cta:hover{opacity:0.88;transform:scale(1.04)!important}
+@media(max-width:768px){.nav-links{display:none}}
 
-    /* Section reveal */
-    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
+/* LAYOUT */
+section{position:relative;z-index:1}
+.container{max-width:1100px;margin:0 auto;padding:0 24px}
 
-    /* Skill tag */
-    .skill-tag { background: #1A1A1A; border: 1px solid #2A2A2A; color: #F0EBE1; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; padding: 4px 10px; border-radius: 2px; letter-spacing: 0.05em; transition: border-color 0.2s, background 0.2s; display: inline-block; }
-    .skill-tag:hover { border-color: #C84B2F; background: #1f1210; }
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
 
-    /* Timeline line */
-    .timeline-line { position: absolute; left: 0; top: 8px; bottom: 0; width: 1px; background: linear-gradient(to bottom, #C84B2F, transparent); }
+/* SECTION LABEL */
+.section-label{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent3)}
+.section-label::before{content:'';width:20px;height:1px;background:var(--accent3)}
 
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: #0F0F0F; }
-    ::-webkit-scrollbar-thumb { background: #C84B2F; }
+/* DIVIDER */
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),var(--accent3),transparent);opacity:0.25;margin:0}
 
-    /* Big number */
-    .big-stat { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 8vw, 6rem); color: #C84B2F; line-height: 1; }
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes pulse-green{0%,100%{box-shadow:0 0 6px #22c55e,0 0 12px #22c55e}50%{box-shadow:0 0 10px #22c55e,0 0 24px #22c55e,0 0 40px #22c55e}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes shimmer{0%{left:-60%}100%{left:120%}}
+@keyframes borderGlow{0%,100%{opacity:0.4}50%{opacity:1}}
+@keyframes learning-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
 
-    /* Horizontal rule styled */
-    .hr-rust { border: none; border-top: 1px solid #2A2A2A; }
+/* BUTTONS */
+.btn-glow{position:relative;padding:13px 30px;border-radius:12px;border:none;cursor:none;font-family:'Outfit',sans-serif;font-size:0.9rem;font-weight:600;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;text-decoration:none;display:inline-flex;align-items:center;gap:8px;overflow:hidden;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 0 20px rgba(108,99,255,0.5),0 0 40px rgba(108,99,255,0.2)}
+.btn-glow::before{content:'';position:absolute;top:-50%;left:-60%;width:40%;height:200%;background:rgba(255,255,255,0.15);transform:skewX(-20deg);transition:left 0.5s ease}
+.btn-glow:hover{transform:translateY(-2px);box-shadow:0 0 30px rgba(108,99,255,0.7),0 0 60px rgba(108,99,255,0.3)}
+.btn-glow:hover::before{left:120%}
+.btn-ghost{position:relative;padding:13px 30px;border-radius:12px;cursor:none;font-family:'Outfit',sans-serif;font-size:0.9rem;font-weight:600;background:transparent;color:var(--text);text-decoration:none;display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border);transition:all 0.3s;overflow:hidden}
+.btn-ghost::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(108,99,255,0.1),rgba(255,107,157,0.1));opacity:0;transition:opacity 0.3s}
+.btn-ghost:hover{border-color:rgba(108,99,255,0.6)}
+.btn-ghost:hover::before{opacity:1}
+.btn-download{position:relative;padding:13px 30px;border-radius:12px;cursor:none;font-family:'Outfit',sans-serif;font-size:0.9rem;font-weight:600;background:rgba(0,212,255,0.08);color:var(--accent3);text-decoration:none;display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(0,212,255,0.3);transition:all 0.3s}
+.btn-download:hover{background:rgba(0,212,255,0.15);border-color:rgba(0,212,255,0.6);box-shadow:0 0 20px rgba(0,212,255,0.2)}
 
-    /* Section label */
-    .section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em; color: #C84B2F; text-transform: uppercase; }
+/* TAGS */
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tag{padding:4px 12px;border-radius:100px;font-family:'JetBrains Mono',monospace;font-size:0.68rem;font-weight:500;border:1px solid;cursor:default;transition:all 0.2s}
+.tag-purple{color:#a78bfa;border-color:rgba(167,139,250,0.3);background:rgba(167,139,250,0.08)}
+.tag-purple:hover{background:rgba(167,139,250,0.2);box-shadow:0 0 12px rgba(167,139,250,0.3)}
+.tag-pink{color:#f472b6;border-color:rgba(244,114,182,0.3);background:rgba(244,114,182,0.08)}
+.tag-pink:hover{background:rgba(244,114,182,0.2);box-shadow:0 0 12px rgba(244,114,182,0.3)}
+.tag-cyan{color:#22d3ee;border-color:rgba(34,211,238,0.3);background:rgba(34,211,238,0.08)}
+.tag-cyan:hover{background:rgba(34,211,238,0.2);box-shadow:0 0 12px rgba(34,211,238,0.3)}
+.tag-amber{color:#fbbf24;border-color:rgba(251,191,36,0.3);background:rgba(251,191,36,0.08)}
+.tag-amber:hover{background:rgba(251,191,36,0.2);box-shadow:0 0 12px rgba(251,191,36,0.3)}
+.tag-green{color:#4ade80;border-color:rgba(74,222,128,0.3);background:rgba(74,222,128,0.08)}
+.tag-green:hover{background:rgba(74,222,128,0.2);box-shadow:0 0 12px rgba(74,222,128,0.3)}
 
-    /* Card hover */
-    .project-card { border: 1px solid #2A2A2A; background: #1A1A1A; transition: border-color 0.3s, transform 0.3s; }
-    .project-card:hover { border-color: #C84B2F; transform: translateY(-4px); }
+/* GLASS CARDS */
+.glass-card{background:rgba(17,17,42,0.6);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:20px;position:relative;overflow:hidden;transition:border-color 0.3s,transform 0.3s}
+.glass-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent)}
+.glass-card:hover{border-color:rgba(108,99,255,0.5);transform:translateY(-4px)}
 
-    /* Contact link */
-    .contact-link { border-bottom: 1px solid #2A2A2A; transition: border-color 0.2s, color 0.2s; }
-    .contact-link:hover { border-color: #C84B2F; color: #C84B2F; }
+/* GLOW ROTATING BORDER CARD */
+.glow-border-card{position:relative;border-radius:20px;padding:2px;background:linear-gradient(135deg,var(--accent),var(--accent2),var(--accent3),var(--accent));background-size:300% 300%;animation:gradientShift 4s ease infinite}
+.glow-border-inner{background:var(--surface);border-radius:18px;padding:32px;height:100%}
 
-    /* Typewriter */
-    .typewriter::after { content: '|'; animation: blink 1s step-end infinite; color: #C84B2F; }
+/* STATUS BADGES */
+.badge-dot{width:6px;height:6px;background:#22c55e;border-radius:50%;box-shadow:0 0 6px #22c55e,0 0 12px #22c55e;animation:pulse-green 2s ease infinite;display:inline-block}
+.status-active{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:100px;font-size:0.7rem;font-family:'JetBrains Mono',monospace;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:#4ade80}
+.status-past{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:100px;font-size:0.7rem;font-family:'JetBrains Mono',monospace;background:rgba(123,120,168,0.1);border:1px solid rgba(123,120,168,0.3);color:var(--muted)}
 
-    @media (max-width: 768px) {
-      .hide-mobile { display: none; }
-    }
-  </style>
+/* ═══════════════════════════════════
+   HERO
+═══════════════════════════════════ */
+#hero{min-height:100vh;display:flex;align-items:center;padding:120px 24px 80px}
+.hero-grid{max-width:1100px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr auto;gap:60px;align-items:center}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr}}
+
+/* AVATAR */
+.avatar-wrap{display:flex;flex-direction:column;align-items:center;gap:20px;animation:fadeUp 0.8s ease 0.3s forwards;opacity:0}
+.avatar-ring{position:relative;width:220px;height:220px;flex-shrink:0}
+.avatar-ring-outer{position:absolute;inset:-4px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2),var(--accent3));animation:rotate 6s linear infinite;padding:3px}
+.avatar-ring-inner{width:100%;height:100%;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.avatar-initials{width:200px;height:200px;border-radius:50%;background:linear-gradient(135deg,var(--surface2),var(--surface));display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:3.5rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;user-select:none;animation:float 4s ease infinite}
+.avatar-photo-hint{font-size:0.65rem;font-family:'JetBrains Mono',monospace;color:var(--muted);text-align:center;border:1px dashed rgba(108,99,255,0.3);padding:6px 14px;border-radius:100px}
+
+/* Social links under avatar */
+.social-links{display:flex;gap:10px;justify-content:center}
+.social-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:0.7rem;text-decoration:none;border:1px solid var(--border);color:var(--muted);background:rgba(17,17,42,0.5);transition:all 0.2s}
+.social-btn:hover{border-color:rgba(108,99,255,0.5);color:var(--text);background:rgba(108,99,255,0.1)}
+.social-btn svg{width:14px;height:14px}
+
+/* Hero text */
+.hero-text{animation:fadeUp 0.7s ease 0.1s forwards;opacity:0}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.25);border-radius:100px;padding:6px 16px;font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--accent3);margin-bottom:24px}
+.hero-name{font-size:clamp(3rem,8vw,6.5rem);font-weight:800;line-height:1.0;letter-spacing:-0.04em;background:linear-gradient(135deg,#fff 0%,var(--accent) 40%,var(--accent2) 70%,var(--accent3) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.hero-sub{font-size:clamp(1rem,2.5vw,1.5rem);font-weight:300;color:var(--muted);margin-bottom:20px}
+.hero-sub span{color:var(--accent4);font-weight:500}
+.hero-desc{font-size:0.95rem;font-weight:300;color:var(--muted);max-width:520px;line-height:1.8;margin-bottom:36px}
+.hero-desc strong{color:var(--text);font-weight:500}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:48px}
+.hero-stats{display:flex;flex-wrap:wrap;gap:14px}
+.stat-glass{background:rgba(17,17,42,0.6);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:14px;padding:18px 24px;position:relative;overflow:hidden;transition:border-color 0.3s,transform 0.3s}
+.stat-glass::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent)}
+.stat-glass:hover{border-color:rgba(108,99,255,0.5);transform:translateY(-3px)}
+.stat-num{font-size:1.9rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+.stat-label{font-size:0.65rem;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-top:3px;letter-spacing:0.1em;text-transform:uppercase}
+
+/* ═══════════════════════════════════
+   ABOUT
+═══════════════════════════════════ */
+#about{padding:100px 24px}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:768px){.about-grid{grid-template-columns:1fr}}
+
+/* ═══════════════════════════════════
+   CURRENTLY LEARNING
+═══════════════════════════════════ */
+.learning-card{
+  background:linear-gradient(135deg,rgba(108,99,255,0.08),rgba(0,212,255,0.08));
+  border:1px solid rgba(0,212,255,0.2);border-radius:16px;padding:24px;
+  position:relative;overflow:hidden;animation:learning-pulse 4s ease infinite;
+}
+.learning-card::before{content:'';position:absolute;top:-40px;right:-40px;width:120px;height:120px;background:radial-gradient(circle,rgba(0,212,255,0.15),transparent);border-radius:50%}
+.learning-progress{height:4px;background:rgba(255,255,255,0.08);border-radius:4px;margin-top:12px;overflow:hidden}
+.learning-progress-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--accent3));width:35%;position:relative;overflow:hidden}
+.learning-progress-fill::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent);animation:shimmer 2s ease infinite}
+
+/* ═══════════════════════════════════
+   TIMELINE (Journey)
+═══════════════════════════════════ */
+#journey{padding:100px 24px;background:var(--bg2)}
+.timeline{position:relative;padding-left:32px}
+.timeline::before{content:'';position:absolute;left:0;top:8px;bottom:0;width:2px;background:linear-gradient(to bottom,var(--accent),var(--accent2),transparent)}
+.tl-item{position:relative;margin-bottom:40px}
+.tl-dot{position:absolute;left:-40px;width:16px;height:16px;border-radius:50%;border:2px solid var(--accent);background:var(--bg);top:4px;box-shadow:0 0 10px var(--accent),0 0 20px rgba(108,99,255,0.3)}
+.tl-dot-active{background:var(--accent)}
+.tl-year{font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--accent3);margin-bottom:4px;letter-spacing:0.1em}
+.tl-title{font-size:1rem;font-weight:600;margin-bottom:4px}
+.tl-sub{font-size:0.82rem;color:var(--muted);font-weight:300;line-height:1.6}
+
+/* ═══════════════════════════════════
+   EXPERIENCE
+═══════════════════════════════════ */
+#experience{padding:100px 24px}
+.exp-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:32px;position:relative;overflow:hidden;transition:border-color 0.3s,transform 0.3s;margin-bottom:20px}
+.exp-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at center,rgba(108,99,255,0.05) 0%,transparent 60%);opacity:0;transition:opacity 0.3s;pointer-events:none}
+.exp-card:hover{border-color:rgba(108,99,255,0.5);transform:translateY(-4px)}
+.exp-card:hover::before{opacity:1}
+.exp-card-primary{border-left:3px solid var(--accent);box-shadow:inset 3px 0 20px rgba(108,99,255,0.08)}
+.project-inner{background:var(--bg2);border:1px solid rgba(108,99,255,0.15);border-radius:14px;padding:20px;margin:20px 0}
+.exp-list{list-style:none}
+.exp-list li{display:flex;gap:10px;font-size:0.88rem;color:var(--muted);font-weight:300;line-height:1.6;margin-bottom:8px}
+.exp-list li::before{content:'▸';color:var(--accent);flex-shrink:0;margin-top:1px}
+
+/* ═══════════════════════════════════
+   CASE STUDY / PROJECTS
+═══════════════════════════════════ */
+#projects{padding:100px 24px;background:var(--bg2)}
+.case-study-card{background:var(--surface);border:1px solid var(--border);border-radius:24px;overflow:hidden;transition:border-color 0.3s,transform 0.3s}
+.case-study-card:hover{border-color:rgba(108,99,255,0.5);transform:translateY(-6px);box-shadow:0 20px 60px rgba(108,99,255,0.15)}
+.case-study-header{padding:32px 32px 0;background:linear-gradient(135deg,rgba(108,99,255,0.08),rgba(0,212,255,0.05))}
+.case-study-mockup{width:100%;height:200px;background:var(--bg);border-radius:12px 12px 0 0;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;margin-top:24px}
+.mockup-browser-bar{position:absolute;top:0;left:0;right:0;height:32px;background:rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;padding:0 12px;gap:6px}
+.mockup-dot{width:8px;height:8px;border-radius:50%}
+.mockup-content{width:100%;padding:40px 20px 0;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;opacity:0.5}
+.mockup-col{background:rgba(108,99,255,0.15);border-radius:6px;height:100px}
+.case-study-body{padding:28px 32px 32px}
+.case-study-title{font-size:1.4rem;font-weight:700;margin-bottom:6px}
+.case-study-desc{color:var(--muted);font-size:0.88rem;line-height:1.7;font-weight:300;margin-bottom:20px}
+.case-study-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.metric{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.metric-num{font-size:1.3rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.metric-label{font-size:0.62rem;color:var(--muted);font-family:'JetBrains Mono',monospace;letter-spacing:0.08em;text-transform:uppercase;margin-top:2px}
+
+/* Coming soon cards */
+.coming-soon-card{background:var(--surface);border:1px dashed rgba(108,99,255,0.25);border-radius:20px;padding:40px 32px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:220px;transition:border-color 0.3s}
+.coming-soon-card:hover{border-color:rgba(108,99,255,0.5)}
+.cs-icon{font-size:2rem;margin-bottom:12px;opacity:0.4}
+.cs-title{font-size:0.9rem;font-weight:600;color:var(--muted);margin-bottom:6px}
+.cs-sub{font-size:0.75rem;color:rgba(123,120,168,0.6);font-family:'JetBrains Mono',monospace}
+
+/* ═══════════════════════════════════
+   SKILLS
+═══════════════════════════════════ */
+#skills{padding:100px 24px}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.skill-category{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;transition:border-color 0.3s,transform 0.3s}
+.skill-category:hover{border-color:rgba(108,99,255,0.4);transform:translateY(-4px)}
+.skill-cat-title{font-family:'JetBrains Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:16px}
+
+/* ═══════════════════════════════════
+   CONTACT
+═══════════════════════════════════ */
+#contact{padding:100px 24px;background:var(--bg2)}
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-bottom:32px}
+.contact-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;text-decoration:none;display:block;position:relative;overflow:hidden;transition:all 0.3s}
+.contact-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(108,99,255,0.08),rgba(255,107,157,0.08));opacity:0;transition:opacity 0.3s}
+.contact-card:hover{border-color:rgba(108,99,255,0.5);transform:translateY(-4px);box-shadow:0 12px 30px rgba(108,99,255,0.15)}
+.contact-card:hover::after{opacity:1}
+.contact-label{font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent3);margin-bottom:6px;display:block}
+.contact-value{color:var(--text);font-size:0.85rem;font-weight:500;word-break:break-all}
+.big-cta{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;padding:16px 40px;border-radius:14px;font-size:1rem;font-weight:700;text-decoration:none;position:relative;overflow:hidden;box-shadow:0 0 30px rgba(108,99,255,0.4),0 0 60px rgba(108,99,255,0.2);transition:transform 0.2s,box-shadow 0.2s}
+.big-cta::before{content:'';position:absolute;top:-50%;left:-60%;width:40%;height:200%;background:rgba(255,255,255,0.2);transform:skewX(-20deg);transition:left 0.5s}
+.big-cta:hover{transform:translateY(-3px);box-shadow:0 0 40px rgba(108,99,255,0.6),0 0 80px rgba(108,99,255,0.3)}
+.big-cta:hover::before{left:120%}
+
+/* FOOTER */
+footer{padding:32px 24px;text-align:center;border-top:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--muted)}
+footer a{color:var(--accent);text-decoration:none}
+</style>
 </head>
 <body>
 
-<!-- Custom Cursor -->
 <div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor-trail" id="cursorTrail"></div>
+<canvas id="stars-canvas"></canvas>
 
-<!-- NAV -->
-<nav class="py-5 px-6 md:px-16 flex items-center justify-between border-b border-smoke/40 backdrop-blur-sm bg-coal/80">
-  <span class="font-display text-xl tracking-widest text-cream">JG<span class="text-rust">.</span></span>
-  <div class="flex gap-8 text-sm font-body text-mist">
-    <a href="#about" class="hover:text-cream transition-colors">About</a>
-    <a href="#experience" class="hover:text-cream transition-colors">Experience</a>
-    <a href="#skills" class="hover:text-cream transition-colors">Skills</a>
-    <a href="#contact" class="hover:text-cream transition-colors">Contact</a>
+<!-- ═══════ NAV ═══════ -->
+<nav>
+  <span class="logo">JG.</span>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#journey">Journey</a>
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+    <a href="#" class="nav-cta" id="nav-resume-btn">Resume ↓</a>
   </div>
 </nav>
 
-<!-- HERO -->
-<section class="min-h-screen flex flex-col justify-end px-6 md:px-16 pb-16 pt-32 relative overflow-hidden">
-  <!-- Background large text -->
-  <div class="absolute top-1/2 left-0 -translate-y-1/2 font-display text-[20vw] text-smoke/30 select-none pointer-events-none leading-none tracking-tight hide-mobile">
-    REACT
-  </div>
-
-  <div class="relative z-10 max-w-5xl">
-    <p class="section-label mb-6" style="animation: fadeUp 0.5s ease 0.1s forwards; opacity:0">Frontend Developer — Bangalore, India</p>
-    <h1 class="font-display text-cream leading-none mb-4" style="font-size: clamp(3.5rem, 10vw, 9rem); animation: fadeUp 0.7s ease 0.2s forwards; opacity:0">
-      JAGADEESH
-    </h1>
-    <div class="w-full h-px bg-smoke my-6" style="animation: lineGrow 1s ease 0.6s forwards; width:0"></div>
-    <p class="text-mist font-body font-light text-lg md:text-xl max-w-2xl leading-relaxed" style="animation: fadeUp 0.7s ease 0.5s forwards; opacity:0">
-      Building scalable enterprise web applications with <span class="text-cream font-medium">React.js</span>, 
-      <span class="text-cream font-medium">Redux Toolkit</span>, and modern frontend tooling. 
-      1.5 years of production React experience — real products, real users.
-    </p>
-    <div class="flex gap-4 mt-10" style="animation: fadeUp 0.7s ease 0.7s forwards; opacity:0">
-      <a href="#experience" class="bg-rust text-cream px-6 py-3 text-sm font-mono tracking-wider hover:bg-rust/80 transition-colors">
-        VIEW WORK →
-      </a>
-      <a href="#contact" class="border border-smoke text-cream px-6 py-3 text-sm font-mono tracking-wider hover:border-rust transition-colors">
-        GET IN TOUCH
-      </a>
-    </div>
-  </div>
-
-  <!-- Stats row -->
-  <div class="relative z-10 mt-20 grid grid-cols-3 gap-8 max-w-lg" style="animation: fadeUp 0.7s ease 0.9s forwards; opacity:0">
-    <div>
-      <div class="big-stat">1.5</div>
-      <p class="text-mist text-xs font-mono tracking-wider mt-1">YRS REACT EXP</p>
-    </div>
-    <div>
-      <div class="big-stat">3.7</div>
-      <p class="text-mist text-xs font-mono tracking-wider mt-1">YRS TOTAL EXP</p>
-    </div>
-    <div>
-      <div class="big-stat">6+</div>
-      <p class="text-mist text-xs font-mono tracking-wider mt-1">MODULES BUILT</p>
-    </div>
-  </div>
-</section>
-
-<!-- ABOUT -->
-<section id="about" class="py-24 px-6 md:px-16 border-t border-smoke">
-  <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-16 items-start">
-    <div class="reveal">
-      <p class="section-label mb-4">01 — About</p>
-      <h2 class="font-display text-5xl md:text-6xl text-cream mb-6">WHO I AM</h2>
-      <p class="text-mist font-light leading-relaxed mb-4">
-        I'm a Frontend Developer based in Andhra Pradesh, currently working in Bangalore. I specialize in React.js and love building things that are fast, modular, and work well at scale.
+<!-- ═══════ HERO ═══════ -->
+<section id="hero">
+  <div class="hero-grid">
+    <!-- Left: Text -->
+    <div class="hero-text">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Available for opportunities · Bangalore / Remote
+      </div>
+      <h1 class="hero-name">Jagadeesh</h1>
+      <p class="hero-sub">React.js <span>Frontend Developer</span></p>
+      <p class="hero-desc">
+        Building <strong>fast, modular, enterprise-grade</strong> web apps with React.js & Redux Toolkit.
+        Real products · Real users · 1.5 years production experience.
       </p>
-      <p class="text-mist font-light leading-relaxed mb-4">
-        At AFORV, I built a full enterprise ERP system for medical implant management — from architecture discussions to shipped features like real-time dashboards, PDF exports, and multi-module workflows. That's the kind of work I do.
-      </p>
-      <p class="text-mist font-light leading-relaxed">
-        My background is honest: I came from a support role at BYJU's, taught myself React, and landed a developer role through sheer effort. I believe in building real things, not faking experience.
-      </p>
+      <div class="hero-ctas">
+        <a href="#projects" class="btn-glow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          View My Work
+        </a>
+        <a href="#" class="btn-download" id="hero-resume-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Resume
+        </a>
+        <a href="#contact" class="btn-ghost">Get In Touch →</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-glass"><div class="stat-num">1.5+</div><div class="stat-label">Yrs React</div></div>
+        <div class="stat-glass"><div class="stat-num">3.7+</div><div class="stat-label">Yrs Total</div></div>
+        <div class="stat-glass"><div class="stat-num">6+</div><div class="stat-label">Modules Built</div></div>
+        <div class="stat-glass"><div class="stat-num">2</div><div class="stat-label">Companies</div></div>
+      </div>
     </div>
-    <div class="reveal" style="transition-delay: 0.2s">
-      <p class="section-label mb-4">Education</p>
-      <div class="space-y-6">
-        <div class="border-l-2 border-rust pl-5">
-          <p class="font-mono text-xs text-mist mb-1">SVCET, Chittoor</p>
-          <p class="text-cream font-medium">MBA — Master of Business Administration</p>
-        </div>
-        <div class="border-l-2 border-smoke pl-5">
-          <p class="font-mono text-xs text-mist mb-1">Sri Venkateswara University</p>
-          <p class="text-cream font-medium">BBA — Bachelor of Business Administration</p>
+
+    <!-- Right: Avatar -->
+    <div class="avatar-wrap">
+      <div class="avatar-ring">
+        <div class="avatar-ring-outer">
+          <div class="avatar-ring-inner">
+            <div class="avatar-initials">JG</div>
+          </div>
         </div>
       </div>
-
-      <div class="mt-10">
-        <p class="section-label mb-4">Languages</p>
-        <div class="flex gap-3">
-          <span class="skill-tag">English</span>
-          <span class="skill-tag">Hindi</span>
-          <span class="skill-tag">Telugu</span>
-        </div>
+      <p class="avatar-photo-hint">📸 Photo coming soon</p>
+      <div class="social-links">
+        <a href="#" class="social-btn" id="github-btn" title="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          GitHub
+        </a>
+        <a href="#" class="social-btn" id="linkedin-btn" title="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- EXPERIENCE -->
-<section id="experience" class="py-24 px-6 md:px-16 bg-ash border-t border-smoke">
-  <div class="max-w-5xl mx-auto">
-    <div class="reveal">
-      <p class="section-label mb-4">02 — Experience</p>
-      <h2 class="font-display text-5xl md:text-6xl text-cream mb-16">WHERE I'VE WORKED</h2>
+<div class="divider"></div>
+
+<!-- ═══════ ABOUT ═══════ -->
+<section id="about">
+  <div class="container">
+    <div class="reveal" style="margin-bottom:40px">
+      <span class="section-label">01 — About</span>
+      <h2 style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;margin-top:8px">Who I Am</h2>
+    </div>
+    <div class="about-grid" style="gap:24px">
+      <div class="reveal">
+        <div class="glow-border-card">
+          <div class="glow-border-inner">
+            <p style="font-size:0.92rem;line-height:1.85;color:var(--muted);font-weight:300;margin-bottom:16px">
+              I'm a <strong style="color:var(--text);font-weight:600">Frontend Developer</strong> based in Andhra Pradesh, working in Bangalore. I build complex, modular React applications for real enterprise environments.
+            </p>
+            <p style="font-size:0.92rem;line-height:1.85;color:var(--muted);font-weight:300;margin-bottom:16px">
+              At AFORV, I built a complete medical implant ERP — modular architecture, dynamic dashboards, PDF exports, real-time API integration, and cross-team collaboration.
+            </p>
+            <p style="font-size:0.92rem;line-height:1.85;color:var(--muted);font-weight:300">
+              My path wasn't traditional — I came through a support role, self-learned React, and earned a developer position through genuine effort. I believe in <strong style="color:var(--accent3);font-weight:500">honest skills over inflated titles.</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:0.15s;display:flex;flex-direction:column;gap:16px">
+        <!-- Education -->
+        <div class="glass-card" style="padding:22px">
+          <span class="section-label" style="margin-bottom:14px;display:inline-flex">Education</span>
+          <div style="margin-bottom:14px">
+            <p style="font-size:0.72rem;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:3px">SVCET, Chittoor</p>
+            <p style="font-weight:600;font-size:0.88rem">MBA — Master of Business Administration</p>
+          </div>
+          <div>
+            <p style="font-size:0.72rem;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:3px">Sri Venkateswara University</p>
+            <p style="font-weight:600;font-size:0.88rem">BBA — Bachelor of Business Administration</p>
+          </div>
+        </div>
+
+        <!-- Currently Learning -->
+        <div class="learning-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px">
+            <div>
+              <span class="section-label" style="margin-bottom:6px;display:inline-flex">Currently Learning</span>
+              <p style="font-size:1rem;font-weight:700">TypeScript</p>
+            </div>
+            <span style="font-size:2rem">⚡</span>
+          </div>
+          <p style="font-size:0.78rem;color:var(--muted);font-weight:300;margin-bottom:10px">Adding static typing to React components for more robust, maintainable code</p>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <span style="font-size:0.65rem;font-family:'JetBrains Mono',monospace;color:var(--accent3)">Progress</span>
+            <span style="font-size:0.65rem;font-family:'JetBrains Mono',monospace;color:var(--muted)">35%</span>
+          </div>
+          <div class="learning-progress"><div class="learning-progress-fill"></div></div>
+        </div>
+
+        <!-- Languages & Location -->
+        <div class="glass-card" style="padding:22px">
+          <span class="section-label" style="margin-bottom:10px;display:inline-flex">Languages</span>
+          <div class="tags" style="margin-bottom:16px">
+            <span class="tag tag-cyan">English</span>
+            <span class="tag tag-purple">Hindi</span>
+            <span class="tag tag-pink">Telugu</span>
+          </div>
+          <span class="section-label" style="margin-bottom:6px;display:inline-flex">Location</span>
+          <p style="color:var(--muted);font-size:0.82rem;font-weight:300">Madanapalle, A.P. · Open to Bangalore & Remote</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════ JOURNEY / TIMELINE ═══════ -->
+<section id="journey">
+  <div class="container">
+    <div class="reveal" style="margin-bottom:48px">
+      <span class="section-label">02 — Journey</span>
+      <h2 style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;margin-top:8px">My Story So Far</h2>
+      <p style="color:var(--muted);font-size:0.9rem;font-weight:300;margin-top:8px;max-width:480px">From student support to building enterprise software — an honest path.</p>
+    </div>
+    <div class="reveal timeline">
+      <div class="tl-item">
+        <div class="tl-dot tl-dot-active" style="box-shadow:0 0 12px var(--accent3),0 0 24px rgba(0,212,255,0.3);border-color:var(--accent3)"></div>
+        <div class="tl-year">May 2024 — Present</div>
+        <div class="tl-title">Frontend Developer · AFORV Technologies</div>
+        <div class="tl-sub">Building a real enterprise ERP for medical implant management. React.js, Redux Toolkit, REST APIs, modular architecture. This is where I turned learning into production.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2023 — 2024</div>
+        <div class="tl-title">Self-taught React while working at BYJU'S</div>
+        <div class="tl-sub">Spent evenings and weekends learning React, JavaScript ES6+, and building small projects — while maintaining a full-time job. Built the foundation that got me hired as a developer.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">Mar 2022 — May 2024</div>
+        <div class="tl-title">Student Support Specialist · BYJU'S</div>
+        <div class="tl-sub">Worked in a fast-paced, high-volume support environment. Developed communication, problem-solving, and stakeholder management skills that I use every day as a developer.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">Until 2022</div>
+        <div class="tl-title">MBA Graduate · SVCET, Chittoor</div>
+        <div class="tl-sub">Completed my MBA. Realized my passion was in building things with code, not in management. Started learning web development from scratch.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════ EXPERIENCE ═══════ -->
+<section id="experience">
+  <div class="container">
+    <div class="reveal" style="margin-bottom:40px">
+      <span class="section-label">03 — Experience</span>
+      <h2 style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;margin-top:8px">Where I've Worked</h2>
     </div>
 
     <!-- AFORV -->
-    <div class="reveal mb-16">
-      <div class="flex flex-col md:flex-row md:items-start gap-6 md:gap-16">
-        <div class="md:w-48 shrink-0">
-          <p class="font-mono text-xs text-rust tracking-wider">MAY 2024 — PRESENT</p>
-          <p class="font-mono text-xs text-mist mt-1">1.5 YRS</p>
+    <div class="reveal exp-card exp-card-primary">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:20px">
+        <div>
+          <h3 style="font-size:1.3rem;font-weight:700;margin-bottom:4px">AFORV Technologies</h3>
+          <p style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:0.8rem">Frontend Developer (React.js) · Bangalore</p>
         </div>
-        <div class="flex-1">
-          <div class="flex items-start justify-between gap-4 mb-4">
-            <div>
-              <h3 class="font-display text-3xl text-cream">AFORV TECHNOLOGIES</h3>
-              <p class="text-rust font-mono text-sm tracking-wider mt-1">FRONTEND DEVELOPER · BANGALORE</p>
-            </div>
-          </div>
-          <hr class="hr-rust mb-6"/>
-
-          <!-- Project highlight card -->
-          <div class="project-card p-5 mb-6 rounded-sm">
-            <p class="font-mono text-xs text-rust mb-3 tracking-wider">FLAGSHIP PROJECT</p>
-            <p class="text-cream font-medium mb-2">Medical Implant Management System</p>
-            <p class="text-mist text-sm font-light leading-relaxed mb-4">
-              Enterprise-grade ERP covering Surgery Tracking, Sales, Logistics, Purchase Orders, Quality Control, and Inventory Movement — all built as independent React modules.
-            </p>
-            <div class="flex flex-wrap gap-2">
-              <span class="skill-tag">React.js v18</span>
-              <span class="skill-tag">Redux Toolkit</span>
-              <span class="skill-tag">REST APIs</span>
-              <span class="skill-tag">Tailwind CSS</span>
-              <span class="skill-tag">Bootstrap 5</span>
-              <span class="skill-tag">Postman</span>
-            </div>
-          </div>
-
-          <ul class="space-y-3 text-mist font-light text-sm leading-relaxed relative pl-6">
-            <div class="timeline-line"></div>
-            <li class="relative">Built <span class="text-cream">reusable React component libraries</span> — modular, responsive, and cross-browser compatible</li>
-            <li class="relative">Integrated <span class="text-cream">REST APIs</span> for real-time data; tested and validated with Postman</li>
-            <li class="relative">Implemented <span class="text-cream">dynamic dashboards, sortable tables, and PDF export</span> for enterprise reporting workflows</li>
-            <li class="relative">Designed <span class="text-cream">mock UI prototypes</span> for client approval before development — reduced revision cycles</li>
-            <li class="relative">Resolved <span class="text-cream">frontend performance bottlenecks</span>; improved page load speed and app stability</li>
-            <li class="relative">Participated in <span class="text-cream">Agile/Scrum ceremonies</span> and architectural discussions with backend and QA teams</li>
-          </ul>
+        <span class="status-active"><span style="width:6px;height:6px;background:#4ade80;border-radius:50%;box-shadow:0 0 6px #4ade80"></span>May 2024 — Present · 1.5 yrs</span>
+      </div>
+      <div class="project-inner">
+        <p style="font-family:'JetBrains Mono',monospace;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent3);margin-bottom:8px">Flagship Product</p>
+        <p style="font-weight:600;font-size:0.95rem;margin-bottom:8px">Medical Implant Management System</p>
+        <p style="color:var(--muted);font-size:0.85rem;line-height:1.7;font-weight:300;margin-bottom:14px">Enterprise ERP with 6 independent React modules — Surgery Tracking, Sales, Logistics, Purchase Orders, Quality Control, and Inventory Movement.</p>
+        <div class="tags">
+          <span class="tag tag-purple">React.js v18</span><span class="tag tag-purple">Redux Toolkit</span><span class="tag tag-cyan">REST APIs</span><span class="tag tag-pink">Tailwind CSS</span><span class="tag tag-pink">Bootstrap 5</span><span class="tag tag-amber">Postman</span><span class="tag tag-amber">Git</span>
         </div>
       </div>
+      <ul class="exp-list">
+        <li>Built reusable, modular React component libraries — responsive, accessible, cross-browser compatible</li>
+        <li>Integrated REST APIs for real-time data; validated and debugged endpoints with Postman</li>
+        <li>Implemented dynamic dashboards, sortable data tables, and PDF export for enterprise reporting</li>
+        <li>Designed mock UI prototypes for client approval before development — reduced revision cycles</li>
+        <li>Optimized component rendering and page load performance; improved application stability</li>
+        <li>Participated in Agile/Scrum ceremonies, architectural discussions, and QA bug triage</li>
+      </ul>
     </div>
-
-    <hr class="hr-rust mb-16"/>
 
     <!-- BYJU's -->
-    <div class="reveal">
-      <div class="flex flex-col md:flex-row md:items-start gap-6 md:gap-16">
-        <div class="md:w-48 shrink-0">
-          <p class="font-mono text-xs text-mist tracking-wider">MAR 2022 — MAY 2024</p>
-          <p class="font-mono text-xs text-mist mt-1">2.2 YRS</p>
+    <div class="reveal exp-card">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:20px">
+        <div>
+          <h3 style="font-size:1.3rem;font-weight:700;margin-bottom:4px">BYJU'S — Think & Learn Pvt. Ltd.</h3>
+          <p style="color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:0.8rem">Student Support Specialist · Bangalore</p>
         </div>
-        <div class="flex-1">
-          <h3 class="font-display text-3xl text-cream">BYJU'S</h3>
-          <p class="text-mist font-mono text-sm tracking-wider mt-1 mb-4">STUDENT SUPPORT SPECIALIST · BANGALORE</p>
-          <hr class="hr-rust mb-6"/>
-          <ul class="space-y-3 text-mist font-light text-sm leading-relaxed relative pl-6">
-            <div class="timeline-line"></div>
-            <li>Guided premium users through course-related queries in a high-volume, fast-paced environment</li>
-            <li>Maintained daily operational reports (Excel) tracking interactions, resolution rates, and follow-ups</li>
-            <li>Collaborated with team leads to maintain consistent service quality standards</li>
-            <li>Built strong <span class="text-cream">communication, problem-solving, and stakeholder management</span> skills — used every day as a developer now</li>
-          </ul>
+        <span class="status-past">Mar 2022 — May 2024 · 2.2 yrs</span>
+      </div>
+      <ul class="exp-list">
+        <li>Guided premium users through course queries in a high-volume, fast-paced environment</li>
+        <li>Maintained daily Excel reports tracking interactions, resolution rates, and follow-ups</li>
+        <li>Developed strong communication, problem-solving, and stakeholder management skills applied daily as a developer now</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════ PROJECTS / CASE STUDY ═══════ -->
+<section id="projects">
+  <div class="container">
+    <div class="reveal" style="margin-bottom:40px">
+      <span class="section-label">04 — Projects</span>
+      <h2 style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;margin-top:8px">What I've Built</h2>
+      <p style="color:var(--muted);font-size:0.9rem;font-weight:300;margin-top:8px;max-width:500px">One production case study from my current role + demo projects on the way.</p>
+    </div>
+
+    <!-- CASE STUDY — AFORV -->
+    <div class="reveal case-study-card" style="margin-bottom:20px">
+      <div class="case-study-header">
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;padding-bottom:20px">
+          <div>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent3);display:block;margin-bottom:6px">Case Study · Production</span>
+            <h3 style="font-size:1.4rem;font-weight:700">Medical Implant Management ERP</h3>
+          </div>
+          <span class="status-active"><span style="width:6px;height:6px;background:#4ade80;border-radius:50%;box-shadow:0 0 6px #4ade80"></span>Live at AFORV</span>
         </div>
+        <!-- Browser mockup -->
+        <div class="case-study-mockup">
+          <div class="mockup-browser-bar">
+            <div class="mockup-dot" style="background:#ff5f57"></div>
+            <div class="mockup-dot" style="background:#febc2e"></div>
+            <div class="mockup-dot" style="background:#28c840"></div>
+            <div style="flex:1;background:rgba(255,255,255,0.06);height:16px;border-radius:4px;margin-left:10px;display:flex;align-items:center;padding:0 10px">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:rgba(255,255,255,0.3)">aforv.app/dashboard</div>
+            </div>
+          </div>
+          <div class="mockup-content">
+            <div class="mockup-col"></div>
+            <div class="mockup-col" style="background:rgba(0,212,255,0.1)"></div>
+            <div class="mockup-col" style="background:rgba(255,107,157,0.1)"></div>
+          </div>
+          <div style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:rgba(255,255,255,0.25)">Dashboard · Inventory · Purchase Orders · Surgery Tracking</div>
+        </div>
+      </div>
+      <div class="case-study-body">
+        <p class="case-study-desc">
+          A full enterprise ERP system for managing medical implant workflows across 6 independent modules. Built from scratch with React.js modular architecture, real-time REST API integration, and enterprise-grade reporting features including PDF exports and dynamic dashboards.
+        </p>
+        <!-- Metrics -->
+        <div class="case-study-metrics">
+          <div class="metric"><div class="metric-num">6</div><div class="metric-label">Modules</div></div>
+          <div class="metric"><div class="metric-num">10+</div><div class="metric-label">API Endpoints</div></div>
+          <div class="metric"><div class="metric-num">4</div><div class="metric-label">Team Size</div></div>
+        </div>
+        <!-- Tags -->
+        <div class="tags" style="margin-bottom:20px">
+          <span class="tag tag-purple">React.js v18</span><span class="tag tag-purple">Redux Toolkit</span><span class="tag tag-cyan">REST APIs</span><span class="tag tag-pink">Tailwind CSS</span><span class="tag tag-pink">Bootstrap 5</span><span class="tag tag-amber">Postman</span><span class="tag tag-amber">Jira</span><span class="tag tag-green">Agile/Scrum</span>
+        </div>
+        <!-- What I did -->
+        <p style="font-family:'JetBrains Mono',monospace;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent3);margin-bottom:10px">My Contributions</p>
+        <ul class="exp-list">
+          <li>Architected independent module structure for Surgery, Sales, Logistics, PO, QC & Inventory</li>
+          <li>Built reusable component library — form fields, data tables, modals, PDF triggers</li>
+          <li>Integrated all REST API endpoints; handled loading, error, and empty states throughout</li>
+          <li>Created interactive dashboards with filters, sorting, pagination and export functionality</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Coming Soon cards -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:20px">
+      <div class="coming-soon-card reveal">
+        <div class="cs-icon">📊</div>
+        <div class="cs-title">Expense Tracker Dashboard</div>
+        <div class="cs-sub">React + Redux · Coming Soon</div>
+        <div style="margin-top:12px;font-size:0.7rem;color:rgba(123,120,168,0.5);font-family:'JetBrains Mono',monospace">IN PROGRESS</div>
+      </div>
+      <div class="coming-soon-card reveal" style="transition-delay:0.1s">
+        <div class="cs-icon">🛒</div>
+        <div class="cs-title">Product UI — React Store</div>
+        <div class="cs-sub">React + Tailwind CSS · Coming Soon</div>
+        <div style="margin-top:12px;font-size:0.7rem;color:rgba(123,120,168,0.5);font-family:'JetBrains Mono',monospace">PLANNED</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SKILLS -->
-<section id="skills" class="py-24 px-6 md:px-16 border-t border-smoke">
-  <div class="max-w-5xl mx-auto">
-    <div class="reveal">
-      <p class="section-label mb-4">03 — Skills</p>
-      <h2 class="font-display text-5xl md:text-6xl text-cream mb-16">WHAT I BUILD WITH</h2>
-    </div>
+<div class="divider"></div>
 
-    <div class="grid md:grid-cols-2 gap-12">
-      <div class="reveal">
-        <p class="font-mono text-xs text-rust tracking-wider mb-4">CORE FRONTEND</p>
-        <div class="flex flex-wrap gap-2">
-          <span class="skill-tag">React.js v18</span>
-          <span class="skill-tag">Redux Toolkit</span>
-          <span class="skill-tag">JavaScript ES6+</span>
-          <span class="skill-tag">HTML5</span>
-          <span class="skill-tag">CSS3</span>
-          <span class="skill-tag">React Router</span>
-          <span class="skill-tag">React Hooks</span>
-          <span class="skill-tag">Context API</span>
-          <span class="skill-tag">Next.js</span>
-        </div>
+<!-- ═══════ SKILLS ═══════ -->
+<section id="skills">
+  <div class="container">
+    <div class="reveal" style="margin-bottom:40px">
+      <span class="section-label">05 — Skills</span>
+      <h2 style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;margin-top:8px">What I Build With</h2>
+    </div>
+    <div class="skills-grid">
+      <div class="reveal skill-category">
+        <p class="skill-cat-title" style="color:var(--accent)">Core Frontend</p>
+        <div class="tags"><span class="tag tag-purple">React.js v18</span><span class="tag tag-purple">Redux Toolkit</span><span class="tag tag-purple">JavaScript ES6+</span><span class="tag tag-purple">HTML5</span><span class="tag tag-purple">CSS3</span><span class="tag tag-purple">React Hooks</span><span class="tag tag-purple">Context API</span><span class="tag tag-purple">React Router</span></div>
       </div>
-      <div class="reveal" style="transition-delay:0.1s">
-        <p class="font-mono text-xs text-rust tracking-wider mb-4">STYLING</p>
-        <div class="flex flex-wrap gap-2">
-          <span class="skill-tag">Tailwind CSS</span>
-          <span class="skill-tag">Bootstrap 5</span>
-          <span class="skill-tag">Responsive Design</span>
-          <span class="skill-tag">CSS Modules</span>
-          <span class="skill-tag">Cross-Browser Compat.</span>
-        </div>
+      <div class="reveal skill-category" style="transition-delay:0.1s">
+        <p class="skill-cat-title" style="color:var(--accent2)">Styling</p>
+        <div class="tags"><span class="tag tag-pink">Tailwind CSS</span><span class="tag tag-pink">Bootstrap 5</span><span class="tag tag-pink">Responsive Design</span><span class="tag tag-pink">CSS Modules</span><span class="tag tag-pink">Figma</span></div>
       </div>
-      <div class="reveal" style="transition-delay:0.15s">
-        <p class="font-mono text-xs text-rust tracking-wider mb-4">APIs & BACKEND BASICS</p>
-        <div class="flex flex-wrap gap-2">
-          <span class="skill-tag">REST APIs</span>
-          <span class="skill-tag">Axios</span>
-          <span class="skill-tag">Postman</span>
-          <span class="skill-tag">Node.js (basics)</span>
-          <span class="skill-tag">MySQL (basics)</span>
-          <span class="skill-tag">MongoDB (basics)</span>
-        </div>
+      <div class="reveal skill-category" style="transition-delay:0.2s">
+        <p class="skill-cat-title" style="color:var(--accent3)">APIs & Backend</p>
+        <div class="tags"><span class="tag tag-cyan">REST APIs</span><span class="tag tag-cyan">Axios</span><span class="tag tag-cyan">Postman</span><span class="tag tag-cyan">Node.js</span><span class="tag tag-cyan">MySQL</span><span class="tag tag-cyan">MongoDB</span></div>
       </div>
-      <div class="reveal" style="transition-delay:0.2s">
-        <p class="font-mono text-xs text-rust tracking-wider mb-4">TOOLS & WORKFLOW</p>
-        <div class="flex flex-wrap gap-2">
-          <span class="skill-tag">Git / GitHub</span>
-          <span class="skill-tag">Jira</span>
-          <span class="skill-tag">Figma</span>
-          <span class="skill-tag">VS Code</span>
-          <span class="skill-tag">Chrome DevTools</span>
-          <span class="skill-tag">Agile / Scrum</span>
+      <div class="reveal skill-category" style="transition-delay:0.3s">
+        <p class="skill-cat-title" style="color:var(--accent4)">Tools & Workflow</p>
+        <div class="tags"><span class="tag tag-amber">Git</span><span class="tag tag-amber">GitHub</span><span class="tag tag-amber">Jira</span><span class="tag tag-amber">VS Code</span><span class="tag tag-amber">Chrome DevTools</span><span class="tag tag-amber">Agile/Scrum</span></div>
+      </div>
+      <div class="reveal skill-category" style="transition-delay:0.35s;border-color:rgba(0,212,255,0.3);background:linear-gradient(135deg,rgba(0,212,255,0.04),var(--surface))">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+          <p class="skill-cat-title" style="color:var(--accent3);margin-bottom:0">Currently Learning</p>
+          <span style="font-size:0.9rem">⚡</span>
         </div>
+        <div class="tags"><span class="tag tag-cyan">TypeScript</span><span class="tag tag-cyan">Type Annotations</span><span class="tag tag-cyan">Interfaces</span><span class="tag tag-cyan">Generics</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CONTACT -->
-<section id="contact" class="py-24 px-6 md:px-16 bg-ash border-t border-smoke">
-  <div class="max-w-5xl mx-auto">
-    <div class="reveal">
-      <p class="section-label mb-4">04 — Contact</p>
-      <h2 class="font-display text-5xl md:text-7xl text-cream mb-6">LET'S TALK<span class="text-rust">.</span></h2>
-      <p class="text-mist font-light text-lg max-w-xl mb-12 leading-relaxed">
-        Open to frontend developer roles in Bangalore and remote. Reach out directly — I respond fast.
-      </p>
-    </div>
+<div class="divider"></div>
 
-    <div class="reveal grid md:grid-cols-2 gap-8 max-w-xl">
-      <div>
-        <p class="font-mono text-xs text-rust tracking-wider mb-3">EMAIL</p>
-        <a href="mailto:yedivilajagadeesh@gmail.com" class="contact-link text-cream font-light pb-1 text-sm break-all">
-          yedivilajagadeesh@gmail.com
-        </a>
+<!-- ═══════ CONTACT ═══════ -->
+<section id="contact">
+  <div class="container">
+    <div class="reveal" style="margin-bottom:40px">
+      <span class="section-label">06 — Contact</span>
+      <h2 style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;margin-top:8px">Let's Talk</h2>
+      <p style="color:var(--muted);font-weight:300;margin-top:8px;font-size:0.92rem">Open to frontend roles in Bangalore and remote. I respond fast.</p>
+    </div>
+    <div class="reveal contact-grid">
+      <a href="mailto:yedivilajagadeesh@gmail.com" class="contact-card">
+        <span class="contact-label">Email</span>
+        <span class="contact-value">yedivilajagadeesh@gmail.com</span>
+      </a>
+      <a href="tel:+916303400360" class="contact-card">
+        <span class="contact-label">Phone</span>
+        <span class="contact-value">+91 63034 00360</span>
+      </a>
+      <a href="#" class="contact-card" id="linkedin-contact">
+        <span class="contact-label">LinkedIn</span>
+        <span class="contact-value" style="color:var(--muted);font-size:0.78rem">Add your URL →</span>
+      </a>
+      <a href="#" class="contact-card" id="github-contact">
+        <span class="contact-label">GitHub</span>
+        <span class="contact-value" style="color:var(--muted);font-size:0.78rem">Add your URL →</span>
+      </a>
+      <div class="contact-card">
+        <span class="contact-label">Location</span>
+        <span class="contact-value">Madanapalle, A.P.</span>
+        <span style="font-size:0.72rem;color:var(--muted);display:block;margin-top:4px">Open to Bangalore & Remote</span>
       </div>
-      <div>
-        <p class="font-mono text-xs text-rust tracking-wider mb-3">PHONE</p>
-        <a href="tel:+916303400360" class="contact-link text-cream font-light pb-1 text-sm">
-          +91 63034 00360
-        </a>
-      </div>
-      <div>
-        <p class="font-mono text-xs text-rust tracking-wider mb-3">LOCATION</p>
-        <p class="text-mist text-sm">Madanapalle, A.P. (Open to Bangalore)</p>
-      </div>
-      <div>
-        <p class="font-mono text-xs text-rust tracking-wider mb-3">AVAILABILITY</p>
-        <div class="flex items-center gap-2">
-          <span class="w-2 h-2 bg-green-400 rounded-full inline-block animate-pulse"></span>
-          <p class="text-cream text-sm">Open to opportunities</p>
+      <div class="contact-card">
+        <span class="contact-label">Status</span>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+          <span class="badge-dot"></span>
+          <span class="contact-value">Open to work</span>
         </div>
       </div>
     </div>
-
-    <div class="reveal mt-12">
-      <a href="mailto:yedivilajagadeesh@gmail.com"
-        class="inline-block bg-rust text-cream px-8 py-4 font-mono text-sm tracking-wider hover:bg-rust/80 transition-colors">
-        SEND ME A MESSAGE →
+    <div class="reveal" style="display:flex;flex-wrap:wrap;gap:14px;align-items:center">
+      <a href="mailto:yedivilajagadeesh@gmail.com" class="big-cta">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Send Me a Message
+      </a>
+      <a href="#" class="btn-download" id="contact-resume-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Resume
       </a>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
-<footer class="py-6 px-6 md:px-16 border-t border-smoke flex items-center justify-between">
-  <span class="font-display text-lg tracking-widest text-smoke">JAGADEESH<span class="text-rust">.</span></span>
-  <p class="font-mono text-xs text-mist">React.js Frontend Developer · 2025</p>
+<footer>
+  <p style="margin-bottom:8px">Jagadeesh · React.js Frontend Developer · 2025</p>
+  <p style="font-size:0.65rem;opacity:0.5">Built with HTML · Tailwind CSS · Pure Passion</p>
 </footer>
 
 <script>
-  // Cursor
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursorRing');
-  document.addEventListener('mousemove', (e) => {
-    cursor.style.left = e.clientX - 5 + 'px';
-    cursor.style.top = e.clientY - 5 + 'px';
-    ring.style.left = e.clientX - 18 + 'px';
-    ring.style.top = e.clientY - 18 + 'px';
-  });
-  document.querySelectorAll('a, button').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      cursor.style.transform = 'scale(2)';
-      ring.style.width = '50px';
-      ring.style.height = '50px';
-    });
-    el.addEventListener('mouseleave', () => {
-      cursor.style.transform = 'scale(1)';
-      ring.style.width = '36px';
-      ring.style.height = '36px';
-    });
-  });
+/* ── Cursor ── */
+const cur=document.getElementById('cursor'),trail=document.getElementById('cursorTrail');
+let mx=window.innerWidth/2,my=window.innerHeight/2,tx=mx,ty=my;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.transform='translate(-50%,-50%) scale(2.2)';cur.style.background='var(--accent2)'});
+  el.addEventListener('mouseleave',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';cur.style.background='var(--accent)'});
+});
+setInterval(()=>{tx+=(mx-tx)*0.13;ty+=(my-ty)*0.13;trail.style.left=tx+'px';trail.style.top=ty+'px'},16);
 
-  // Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.1 });
-  reveals.forEach(el => observer.observe(el));
+/* ── Stars ── */
+const canvas=document.getElementById('stars-canvas'),ctx=canvas.getContext('2d');
+let stars=[];
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight;initStars()}
+function initStars(){stars=[];for(let i=0;i<200;i++)stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.4+0.3,o:Math.random()*0.6+0.1,s:Math.random()*0.4+0.05,d:Math.random()*Math.PI*2})}
+function drawStars(){ctx.clearRect(0,0,canvas.width,canvas.height);stars.forEach(s=>{s.d+=s.s*0.01;const f=s.o+Math.sin(s.d)*0.2;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(200,190,255,${Math.max(0,Math.min(1,f))})`;ctx.fill()});requestAnimationFrame(drawStars)}
+window.addEventListener('resize',resize);resize();drawStars();
 
-  // Animate timeline line on scroll
-  document.querySelectorAll('.timeline-line').forEach(line => {
-    const obs = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) line.style.transition = 'height 1s ease';
-    });
-    obs.observe(line);
+/* ── Scroll reveal ── */
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+/* ── Nav highlight ── */
+const secs=document.querySelectorAll('section[id]'),navAs=document.querySelectorAll('.nav-links a[href^="#"]');
+window.addEventListener('scroll',()=>{let c='';secs.forEach(s=>{if(scrollY>=s.offsetTop-130)c=s.id});navAs.forEach(a=>{a.style.color=a.getAttribute('href')==='#'+c?'var(--text)':'var(--muted)'})},{passive:true});
+
+/* ── Resume download (placeholder) ── */
+function resumeAlert(e){e.preventDefault();alert('📄 Add your resume PDF to the project folder and update this link!\n\nIn your HTML, replace href="#" on resume buttons with href="./jagadeesh-resume.pdf"')}
+document.getElementById('hero-resume-btn').addEventListener('click',resumeAlert);
+document.getElementById('nav-resume-btn').addEventListener('click',resumeAlert);
+document.getElementById('contact-resume-btn').addEventListener('click',resumeAlert);
+
+/* ── Social link placeholders ── */
+['github-btn','linkedin-btn','github-contact','linkedin-contact'].forEach(id=>{
+  document.getElementById(id)?.addEventListener('click',e=>{
+    e.preventDefault();
+    alert('🔗 Add your GitHub / LinkedIn URL here!\n\nIn the HTML, find this button and replace href="#" with your actual URL.');
   });
+});
 </script>
 </body>
 </html>
